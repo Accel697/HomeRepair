@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище home_repairModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="clients">
+          <Key>
+            <PropertyRef Name="idClient" />
+          </Key>
+          <Property Name="idClient" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="lastNameClient" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="firstNameClient" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="middleNameClient" Type="varchar" MaxLength="30" />
+          <Property Name="loginClient" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="passwordClient" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="emailClient" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="phoneNumberClient" Type="varchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="employees">
+          <Key>
+            <PropertyRef Name="idEmployee" />
+          </Key>
+          <Property Name="idEmployee" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="lastNameEmployee" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="firstNameEmployee" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="middleNameEmployee" Type="varchar" MaxLength="30" />
+          <Property Name="birthDateEmployee" Type="date" Nullable="false" />
+          <Property Name="genderEmployee" Type="bigint" Nullable="false" />
+          <Property Name="positionAtWork" Type="bigint" Nullable="false" />
+          <Property Name="wages" Type="numeric" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="phoneNumberEmployee" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="photoEmployee" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="genders">
+          <Key>
+            <PropertyRef Name="idGender" />
+          </Key>
+          <Property Name="idGender" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titleGender" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="job_titles">
+          <Key>
+            <PropertyRef Name="idJob" />
+          </Key>
+          <Property Name="idJob" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titleJob" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reviews">
+          <Key>
+            <PropertyRef Name="idReview" />
+          </Key>
+          <Property Name="idReview" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="masterReview" Type="bigint" Nullable="false" />
+          <Property Name="clientReview" Type="bigint" Nullable="false" />
+          <Property Name="gradeReview" Type="int" Nullable="false" />
+          <Property Name="textReview" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="services">
+          <Key>
+            <PropertyRef Name="idService" />
+          </Key>
+          <Property Name="idService" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titleService" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="priceService" Type="numeric" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="descriptionService" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="loginUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="passwordUser" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="employeeData" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="visit_statuses">
+          <Key>
+            <PropertyRef Name="idStatus" />
+          </Key>
+          <Property Name="idStatus" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titleStatus" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="visits">
+          <Key>
+            <PropertyRef Name="idVisit" />
+          </Key>
+          <Property Name="idVisit" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="masterVisit" Type="bigint" />
+          <Property Name="clientVisit" Type="bigint" />
+          <Property Name="phoneNumberVisit" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="datetimeVisit" Type="datetime" />
+          <Property Name="priceVisit" Type="numeric" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="commentVisit" Type="varchar" MaxLength="500" />
+          <Property Name="statusVisit" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="visits_services">
+          <Key>
+            <PropertyRef Name="visit" />
+            <PropertyRef Name="service" />
+          </Key>
+          <Property Name="visit" Type="bigint" Nullable="false" />
+          <Property Name="service" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_employees_genders">
+          <End Role="genders" Type="Self.genders" Multiplicity="1" />
+          <End Role="employees" Type="Self.employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genders">
+              <PropertyRef Name="idGender" />
+            </Principal>
+            <Dependent Role="employees">
+              <PropertyRef Name="genderEmployee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employees_job_titles">
+          <End Role="job_titles" Type="Self.job_titles" Multiplicity="1" />
+          <End Role="employees" Type="Self.employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="job_titles">
+              <PropertyRef Name="idJob" />
+            </Principal>
+            <Dependent Role="employees">
+              <PropertyRef Name="positionAtWork" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reviews_clients">
+          <End Role="clients" Type="Self.clients" Multiplicity="1" />
+          <End Role="reviews" Type="Self.reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clients">
+              <PropertyRef Name="idClient" />
+            </Principal>
+            <Dependent Role="reviews">
+              <PropertyRef Name="clientReview" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reviews_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="1" />
+          <End Role="reviews" Type="Self.reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employees">
+              <PropertyRef Name="idEmployee" />
+            </Principal>
+            <Dependent Role="reviews">
+              <PropertyRef Name="masterReview" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="1" />
+          <End Role="users" Type="Self.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employees">
+              <PropertyRef Name="idEmployee" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="employeeData" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_clients">
+          <End Role="clients" Type="Self.clients" Multiplicity="0..1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clients">
+              <PropertyRef Name="idClient" />
+            </Principal>
+            <Dependent Role="visits">
+              <PropertyRef Name="clientVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="0..1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employees">
+              <PropertyRef Name="idEmployee" />
+            </Principal>
+            <Dependent Role="visits">
+              <PropertyRef Name="masterVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_services_services1">
+          <End Role="services" Type="Self.services" Multiplicity="1" />
+          <End Role="visits_services" Type="Self.visits_services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="services">
+              <PropertyRef Name="idService" />
+            </Principal>
+            <Dependent Role="visits_services">
+              <PropertyRef Name="visit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_services_visits1">
+          <End Role="visits" Type="Self.visits" Multiplicity="1" />
+          <End Role="visits_services" Type="Self.visits_services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="visits">
+              <PropertyRef Name="idVisit" />
+            </Principal>
+            <Dependent Role="visits_services">
+              <PropertyRef Name="visit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_visit_statuses">
+          <End Role="visit_statuses" Type="Self.visit_statuses" Multiplicity="1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="visit_statuses">
+              <PropertyRef Name="idStatus" />
+            </Principal>
+            <Dependent Role="visits">
+              <PropertyRef Name="statusVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище home_repairModelContainer">
+          <EntitySet Name="clients" EntityType="Self.clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employees" EntityType="Self.employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="genders" EntityType="Self.genders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="job_titles" EntityType="Self.job_titles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reviews" EntityType="Self.reviews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="services" EntityType="Self.services" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="visit_statuses" EntityType="Self.visit_statuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="visits" EntityType="Self.visits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="visits_services" EntityType="Self.visits_services" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_employees_genders" Association="Self.FK_employees_genders">
+            <End Role="genders" EntitySet="genders" />
+            <End Role="employees" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employees_job_titles" Association="Self.FK_employees_job_titles">
+            <End Role="job_titles" EntitySet="job_titles" />
+            <End Role="employees" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reviews_clients" Association="Self.FK_reviews_clients">
+            <End Role="clients" EntitySet="clients" />
+            <End Role="reviews" EntitySet="reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reviews_employees" Association="Self.FK_reviews_employees">
+            <End Role="employees" EntitySet="employees" />
+            <End Role="reviews" EntitySet="reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_employees" Association="Self.FK_users_employees">
+            <End Role="employees" EntitySet="employees" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_clients" Association="Self.FK_visits_clients">
+            <End Role="clients" EntitySet="clients" />
+            <End Role="visits" EntitySet="visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_employees" Association="Self.FK_visits_employees">
+            <End Role="employees" EntitySet="employees" />
+            <End Role="visits" EntitySet="visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_services_services1" Association="Self.FK_visits_services_services1">
+            <End Role="services" EntitySet="services" />
+            <End Role="visits_services" EntitySet="visits_services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_services_visits1" Association="Self.FK_visits_services_visits1">
+            <End Role="visits" EntitySet="visits" />
+            <End Role="visits_services" EntitySet="visits_services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_visit_statuses" Association="Self.FK_visits_visit_statuses">
+            <End Role="visit_statuses" EntitySet="visit_statuses" />
+            <End Role="visits" EntitySet="visits" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="home_repairModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="clients">
+          <Key>
+            <PropertyRef Name="idClient" />
+          </Key>
+          <Property Name="idClient" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lastNameClient" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="firstNameClient" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="middleNameClient" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="loginClient" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="passwordClient" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="emailClient" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phoneNumberClient" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="reviews" Relationship="Self.FK_reviews_clients" FromRole="clients" ToRole="reviews" />
+          <NavigationProperty Name="visits" Relationship="Self.FK_visits_clients" FromRole="clients" ToRole="visits" />
+        </EntityType>
+        <EntityType Name="employees">
+          <Key>
+            <PropertyRef Name="idEmployee" />
+          </Key>
+          <Property Name="idEmployee" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lastNameEmployee" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="firstNameEmployee" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="middleNameEmployee" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="birthDateEmployee" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="genderEmployee" Type="Int64" Nullable="false" />
+          <Property Name="positionAtWork" Type="Int64" Nullable="false" />
+          <Property Name="wages" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="phoneNumberEmployee" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="photoEmployee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="genders" Relationship="Self.FK_employees_genders" FromRole="employees" ToRole="genders" />
+          <NavigationProperty Name="job_titles" Relationship="Self.FK_employees_job_titles" FromRole="employees" ToRole="job_titles" />
+          <NavigationProperty Name="reviews" Relationship="Self.FK_reviews_employees" FromRole="employees" ToRole="reviews" />
+          <NavigationProperty Name="users" Relationship="Self.FK_users_employees" FromRole="employees" ToRole="users" />
+          <NavigationProperty Name="visits" Relationship="Self.FK_visits_employees" FromRole="employees" ToRole="visits" />
+        </EntityType>
+        <EntityType Name="genders">
+          <Key>
+            <PropertyRef Name="idGender" />
+          </Key>
+          <Property Name="idGender" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titleGender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_employees_genders" FromRole="genders" ToRole="employees" />
+        </EntityType>
+        <EntityType Name="job_titles">
+          <Key>
+            <PropertyRef Name="idJob" />
+          </Key>
+          <Property Name="idJob" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titleJob" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_employees_job_titles" FromRole="job_titles" ToRole="employees" />
+        </EntityType>
+        <EntityType Name="reviews">
+          <Key>
+            <PropertyRef Name="idReview" />
+          </Key>
+          <Property Name="idReview" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="masterReview" Type="Int64" Nullable="false" />
+          <Property Name="clientReview" Type="Int64" Nullable="false" />
+          <Property Name="gradeReview" Type="Int32" Nullable="false" />
+          <Property Name="textReview" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="clients" Relationship="Self.FK_reviews_clients" FromRole="reviews" ToRole="clients" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_reviews_employees" FromRole="reviews" ToRole="employees" />
+        </EntityType>
+        <EntityType Name="services">
+          <Key>
+            <PropertyRef Name="idService" />
+          </Key>
+          <Property Name="idService" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titleService" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="priceService" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="descriptionService" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="visits_services" Relationship="Self.FK_visits_services_services1" FromRole="services" ToRole="visits_services" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="loginUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="passwordUser" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employeeData" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_users_employees" FromRole="users" ToRole="employees" />
+        </EntityType>
+        <EntityType Name="visit_statuses">
+          <Key>
+            <PropertyRef Name="idStatus" />
+          </Key>
+          <Property Name="idStatus" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titleStatus" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="visits" Relationship="Self.FK_visits_visit_statuses" FromRole="visit_statuses" ToRole="visits" />
+        </EntityType>
+        <EntityType Name="visits">
+          <Key>
+            <PropertyRef Name="idVisit" />
+          </Key>
+          <Property Name="idVisit" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="masterVisit" Type="Int64" />
+          <Property Name="clientVisit" Type="Int64" />
+          <Property Name="phoneNumberVisit" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="datetimeVisit" Type="DateTime" Precision="3" />
+          <Property Name="priceVisit" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="commentVisit" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="statusVisit" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="clients" Relationship="Self.FK_visits_clients" FromRole="visits" ToRole="clients" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_visits_employees" FromRole="visits" ToRole="employees" />
+          <NavigationProperty Name="visit_statuses" Relationship="Self.FK_visits_visit_statuses" FromRole="visits" ToRole="visit_statuses" />
+          <NavigationProperty Name="visits_services" Relationship="Self.FK_visits_services_visits1" FromRole="visits" ToRole="visits_services" />
+        </EntityType>
+        <EntityType Name="visits_services">
+          <Key>
+            <PropertyRef Name="visit" />
+            <PropertyRef Name="service" />
+          </Key>
+          <Property Name="visit" Type="Int64" Nullable="false" />
+          <Property Name="service" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="services" Relationship="Self.FK_visits_services_services1" FromRole="visits_services" ToRole="services" />
+          <NavigationProperty Name="visits" Relationship="Self.FK_visits_services_visits1" FromRole="visits_services" ToRole="visits" />
+        </EntityType>
+        <Association Name="FK_reviews_clients">
+          <End Role="clients" Type="Self.clients" Multiplicity="1" />
+          <End Role="reviews" Type="Self.reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clients">
+              <PropertyRef Name="idClient" />
+            </Principal>
+            <Dependent Role="reviews">
+              <PropertyRef Name="clientReview" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_clients">
+          <End Role="clients" Type="Self.clients" Multiplicity="0..1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clients">
+              <PropertyRef Name="idClient" />
+            </Principal>
+            <Dependent Role="visits">
+              <PropertyRef Name="clientVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employees_genders">
+          <End Role="genders" Type="Self.genders" Multiplicity="1" />
+          <End Role="employees" Type="Self.employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genders">
+              <PropertyRef Name="idGender" />
+            </Principal>
+            <Dependent Role="employees">
+              <PropertyRef Name="genderEmployee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_employees_job_titles">
+          <End Role="job_titles" Type="Self.job_titles" Multiplicity="1" />
+          <End Role="employees" Type="Self.employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="job_titles">
+              <PropertyRef Name="idJob" />
+            </Principal>
+            <Dependent Role="employees">
+              <PropertyRef Name="positionAtWork" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reviews_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="1" />
+          <End Role="reviews" Type="Self.reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employees">
+              <PropertyRef Name="idEmployee" />
+            </Principal>
+            <Dependent Role="reviews">
+              <PropertyRef Name="masterReview" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_users_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="1" />
+          <End Role="users" Type="Self.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employees">
+              <PropertyRef Name="idEmployee" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="employeeData" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="0..1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employees">
+              <PropertyRef Name="idEmployee" />
+            </Principal>
+            <Dependent Role="visits">
+              <PropertyRef Name="masterVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_services_services1">
+          <End Role="services" Type="Self.services" Multiplicity="1" />
+          <End Role="visits_services" Type="Self.visits_services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="services">
+              <PropertyRef Name="idService" />
+            </Principal>
+            <Dependent Role="visits_services">
+              <PropertyRef Name="visit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_visit_statuses">
+          <End Role="visit_statuses" Type="Self.visit_statuses" Multiplicity="1" />
+          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="visit_statuses">
+              <PropertyRef Name="idStatus" />
+            </Principal>
+            <Dependent Role="visits">
+              <PropertyRef Name="statusVisit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_services_visits1">
+          <End Role="visits" Type="Self.visits" Multiplicity="1" />
+          <End Role="visits_services" Type="Self.visits_services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="visits">
+              <PropertyRef Name="idVisit" />
+            </Principal>
+            <Dependent Role="visits_services">
+              <PropertyRef Name="visit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="home_repairEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="clients" EntityType="Self.clients" />
+          <EntitySet Name="employees" EntityType="Self.employees" />
+          <EntitySet Name="genders" EntityType="Self.genders" />
+          <EntitySet Name="job_titles" EntityType="Self.job_titles" />
+          <EntitySet Name="reviews" EntityType="Self.reviews" />
+          <EntitySet Name="services" EntityType="Self.services" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="users" EntityType="Self.users" />
+          <EntitySet Name="visit_statuses" EntityType="Self.visit_statuses" />
+          <EntitySet Name="visits" EntityType="Self.visits" />
+          <EntitySet Name="visits_services" EntityType="Self.visits_services" />
+          <AssociationSet Name="FK_reviews_clients" Association="Self.FK_reviews_clients">
+            <End Role="clients" EntitySet="clients" />
+            <End Role="reviews" EntitySet="reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_clients" Association="Self.FK_visits_clients">
+            <End Role="clients" EntitySet="clients" />
+            <End Role="visits" EntitySet="visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employees_genders" Association="Self.FK_employees_genders">
+            <End Role="genders" EntitySet="genders" />
+            <End Role="employees" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_employees_job_titles" Association="Self.FK_employees_job_titles">
+            <End Role="job_titles" EntitySet="job_titles" />
+            <End Role="employees" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reviews_employees" Association="Self.FK_reviews_employees">
+            <End Role="employees" EntitySet="employees" />
+            <End Role="reviews" EntitySet="reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_employees" Association="Self.FK_users_employees">
+            <End Role="employees" EntitySet="employees" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_employees" Association="Self.FK_visits_employees">
+            <End Role="employees" EntitySet="employees" />
+            <End Role="visits" EntitySet="visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_services_services1" Association="Self.FK_visits_services_services1">
+            <End Role="services" EntitySet="services" />
+            <End Role="visits_services" EntitySet="visits_services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_visit_statuses" Association="Self.FK_visits_visit_statuses">
+            <End Role="visit_statuses" EntitySet="visit_statuses" />
+            <End Role="visits" EntitySet="visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_services_visits1" Association="Self.FK_visits_services_visits1">
+            <End Role="visits" EntitySet="visits" />
+            <End Role="visits_services" EntitySet="visits_services" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище home_repairModelContainer" CdmEntityContainer="home_repairEntities1">
+          <EntitySetMapping Name="clients">
+            <EntityTypeMapping TypeName="home_repairModel.clients">
+              <MappingFragment StoreEntitySet="clients">
+                <ScalarProperty Name="idClient" ColumnName="idClient" />
+                <ScalarProperty Name="lastNameClient" ColumnName="lastNameClient" />
+                <ScalarProperty Name="firstNameClient" ColumnName="firstNameClient" />
+                <ScalarProperty Name="middleNameClient" ColumnName="middleNameClient" />
+                <ScalarProperty Name="loginClient" ColumnName="loginClient" />
+                <ScalarProperty Name="passwordClient" ColumnName="passwordClient" />
+                <ScalarProperty Name="emailClient" ColumnName="emailClient" />
+                <ScalarProperty Name="phoneNumberClient" ColumnName="phoneNumberClient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="home_repairModel.employees">
+              <MappingFragment StoreEntitySet="employees">
+                <ScalarProperty Name="idEmployee" ColumnName="idEmployee" />
+                <ScalarProperty Name="lastNameEmployee" ColumnName="lastNameEmployee" />
+                <ScalarProperty Name="firstNameEmployee" ColumnName="firstNameEmployee" />
+                <ScalarProperty Name="middleNameEmployee" ColumnName="middleNameEmployee" />
+                <ScalarProperty Name="birthDateEmployee" ColumnName="birthDateEmployee" />
+                <ScalarProperty Name="genderEmployee" ColumnName="genderEmployee" />
+                <ScalarProperty Name="positionAtWork" ColumnName="positionAtWork" />
+                <ScalarProperty Name="wages" ColumnName="wages" />
+                <ScalarProperty Name="phoneNumberEmployee" ColumnName="phoneNumberEmployee" />
+                <ScalarProperty Name="photoEmployee" ColumnName="photoEmployee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="genders">
+            <EntityTypeMapping TypeName="home_repairModel.genders">
+              <MappingFragment StoreEntitySet="genders">
+                <ScalarProperty Name="idGender" ColumnName="idGender" />
+                <ScalarProperty Name="titleGender" ColumnName="titleGender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="job_titles">
+            <EntityTypeMapping TypeName="home_repairModel.job_titles">
+              <MappingFragment StoreEntitySet="job_titles">
+                <ScalarProperty Name="idJob" ColumnName="idJob" />
+                <ScalarProperty Name="titleJob" ColumnName="titleJob" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reviews">
+            <EntityTypeMapping TypeName="home_repairModel.reviews">
+              <MappingFragment StoreEntitySet="reviews">
+                <ScalarProperty Name="idReview" ColumnName="idReview" />
+                <ScalarProperty Name="masterReview" ColumnName="masterReview" />
+                <ScalarProperty Name="clientReview" ColumnName="clientReview" />
+                <ScalarProperty Name="gradeReview" ColumnName="gradeReview" />
+                <ScalarProperty Name="textReview" ColumnName="textReview" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="services">
+            <EntityTypeMapping TypeName="home_repairModel.services">
+              <MappingFragment StoreEntitySet="services">
+                <ScalarProperty Name="idService" ColumnName="idService" />
+                <ScalarProperty Name="titleService" ColumnName="titleService" />
+                <ScalarProperty Name="priceService" ColumnName="priceService" />
+                <ScalarProperty Name="descriptionService" ColumnName="descriptionService" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="home_repairModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="home_repairModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="loginUser" ColumnName="loginUser" />
+                <ScalarProperty Name="passwordUser" ColumnName="passwordUser" />
+                <ScalarProperty Name="employeeData" ColumnName="employeeData" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="visit_statuses">
+            <EntityTypeMapping TypeName="home_repairModel.visit_statuses">
+              <MappingFragment StoreEntitySet="visit_statuses">
+                <ScalarProperty Name="idStatus" ColumnName="idStatus" />
+                <ScalarProperty Name="titleStatus" ColumnName="titleStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="visits">
+            <EntityTypeMapping TypeName="home_repairModel.visits">
+              <MappingFragment StoreEntitySet="visits">
+                <ScalarProperty Name="idVisit" ColumnName="idVisit" />
+                <ScalarProperty Name="masterVisit" ColumnName="masterVisit" />
+                <ScalarProperty Name="clientVisit" ColumnName="clientVisit" />
+                <ScalarProperty Name="phoneNumberVisit" ColumnName="phoneNumberVisit" />
+                <ScalarProperty Name="datetimeVisit" ColumnName="datetimeVisit" />
+                <ScalarProperty Name="priceVisit" ColumnName="priceVisit" />
+                <ScalarProperty Name="commentVisit" ColumnName="commentVisit" />
+                <ScalarProperty Name="statusVisit" ColumnName="statusVisit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="visits_services">
+            <EntityTypeMapping TypeName="home_repairModel.visits_services">
+              <MappingFragment StoreEntitySet="visits_services">
+                <ScalarProperty Name="visit" ColumnName="visit" />
+                <ScalarProperty Name="service" ColumnName="service" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
