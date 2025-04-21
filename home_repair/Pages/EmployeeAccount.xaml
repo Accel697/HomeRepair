@@ -1,0 +1,25 @@
+﻿<Page x:Class="home_repair.Pages.EmployeeAccount"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:home_repair.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EmployeeAccount">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="260"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="Логин:"/>
+            <TextBox Name="txtLogin" Text="{Binding loginUser}"/>
+            <TextBlock Text="Пароль:"/>
+            <TextBox Name="txtPassword" Text="{Binding passwordUser}"/>
+            <Button x:Name="btnSave" Margin="5,15,5,5" Content="Сохранить" Click="btnSave_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

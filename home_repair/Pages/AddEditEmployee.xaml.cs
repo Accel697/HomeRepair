@@ -72,26 +72,52 @@ namespace home_repair.Pages
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show($"Вы действительно хотите удалить {_employee.lastNameEmployee} {_employee.firstNameEmployee}?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Вы действительно хотите удалить сотрудника {_employee.lastNameEmployee} {_employee.firstNameEmployee}?",
+        "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 try
                 {
                     using (var context = new home_repairEntities1())
                     {
-                        var user = context.users.FirstOrDefault(u => u.employeeData == _employee.idEmployee);
-                        if (user != null)
+                        var employeeToDelete = context.employees
+                            .Include("users") 
+                            .FirstOrDefault(emp => emp.idEmployee == _employee.idEmployee);
+
+                        if (employeeToDelete == null)
                         {
-                            context.users.Remove(user);
+                            MessageBox.Show("Сотрудник не найден в базе данных", "Ошибка",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
                         }
-                        context.employees.Remove(_employee);
+
+                        if (employeeToDelete.users != null && employeeToDelete.users.Any())
+                        {
+                            var userToDelete = employeeToDelete.users.FirstOrDefault();
+                            if (userToDelete != null)
+                            {
+                                context.users.Remove(userToDelete);
+                            }
+                        }
+
+                        context.employees.Remove(employeeToDelete);
+
                         context.SaveChanges();
-                        MessageBox.Show("Запись удалена!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        MessageBox.Show("Сотрудник успешно удален", "Успех",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+
                         NavigationService.GoBack();
                     }
                 }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+                {
+                    MessageBox.Show($"Ошибка при удалении: Возможно, сотрудник связан с другими записями.\n{dbEx.InnerException?.Message}",
+                        "Ошибка базы данных", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message.ToString(), "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Ошибка при удалении: {ex.Message}",
+                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -105,6 +131,7 @@ namespace home_repair.Pages
                     if (_employee.idEmployee == 0)
                     {
                         context.employees.Add(_employee);
+                        NavigationService.GoBack();
                     }
                     else
                     {
@@ -139,7 +166,7 @@ namespace home_repair.Pages
 
         private void btnUser_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new EmployeeAccount(_employee));
         }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище home_repairModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище home_repairModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="clients">
           <Key>
             <PropertyRef Name="idClient" />
@@ -100,6 +100,7 @@
           <Property Name="masterVisit" Type="bigint" />
           <Property Name="clientVisit" Type="bigint" />
           <Property Name="phoneNumberVisit" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="adressVisit" Type="varchar" MaxLength="100" />
           <Property Name="datetimeVisit" Type="datetime" />
           <Property Name="priceVisit" Type="numeric" Precision="8" Scale="2" Nullable="false" />
           <Property Name="commentVisit" Type="varchar" MaxLength="500" />
@@ -286,8 +287,7 @@
             <End Role="visits" EntitySet="visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="home_repairModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -408,6 +408,7 @@
           <NavigationProperty Name="employees" Relationship="Self.FK_visits_employees" FromRole="visits" ToRole="employees" />
           <NavigationProperty Name="visit_statuses" Relationship="Self.FK_visits_visit_statuses" FromRole="visits" ToRole="visit_statuses" />
           <NavigationProperty Name="visits_services" Relationship="Self.FK_visits_services_visits1" FromRole="visits" ToRole="visits_services" />
+          <Property Name="adressVisit" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="visits_services">
           <Key>
@@ -697,6 +698,7 @@
           <EntitySetMapping Name="visits">
             <EntityTypeMapping TypeName="home_repairModel.visits">
               <MappingFragment StoreEntitySet="visits">
+                <ScalarProperty Name="adressVisit" ColumnName="adressVisit" />
                 <ScalarProperty Name="idVisit" ColumnName="idVisit" />
                 <ScalarProperty Name="masterVisit" ColumnName="masterVisit" />
                 <ScalarProperty Name="clientVisit" ColumnName="clientVisit" />

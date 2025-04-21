@@ -6,9 +6,45 @@
       xmlns:local="clr-namespace:home_repair.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Manager">
+      Title="Manager" IsVisibleChanged="Page_IsVisibleChanged">
 
     <Grid>
-        
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Фильтр по статусу" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ComboBox Name="cbStatusVisit" Text="Все вызовы" Width="200" Margin="10" SelectionChanged="cbStatusVisit_SelectionChanged" Height="35"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Поиск по ФИО" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBox Name="tbSearch" Width="200" Margin="10"  TextChanged="tbSearch_TextChanged" Height="30" FontSize="12"/>
+            </StackPanel>
+            <ListView Name="VisitsListView" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0, 5, 0" MouseDoubleClick="VisitsListView_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=1}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                            <StackPanel Width="200" Height="320">
+                                <TextBlock Text="{Binding visit_statuses.titleStatus}" FontWeight="Bold" Margin="5"/>
+                                <TextBlock Text="{Binding GetMaster}" Margin="5"/>
+                                <TextBlock Text="{Binding GetClient}" Margin="5"/>
+                                <TextBlock Text="{Binding phoneNumberVisit}" Margin="5"/>
+                                <TextBlock Text="{Binding adressVisit}" Margin="5" TextWrapping="Wrap" MaxWidth="190"/>
+                                <TextBlock Text="{Binding priceVisit, StringFormat={}{0:N2} руб}" Margin="5"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Margin="5,15,5,15" Content="Оформить вызов" Click="AddVisitButton_Click" Width="180"/>
+        </StackPanel>
     </Grid>
 </Page>

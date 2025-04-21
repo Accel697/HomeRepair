@@ -1,0 +1,75 @@
+﻿<Page x:Class="home_repair.Pages.AddEditVisit"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:home_repair.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AddEditVisit">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Поиск по ФИО"/>
+            <TextBox Name="tbSearch" Margin="10"/>
+            <Button x:Name="btnSearchMaster" Margin="5,15,5,5" Content="Найти мастера" Click="btnSearchMaster_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="{Binding GetMaster}"/>
+            <TextBlock Text="{Binding GetClient}"/>
+            <TextBlock Text="Номер телефона:"/>
+            <TextBox Name="txtPhoneNumber" Text="{Binding phoneNumberVisit}"/>
+            <TextBlock Text="Адрес:"/>
+            <TextBox Name="txtAdress" Text="{Binding adressVisit}"/>
+            <TextBlock Text="Дата и время:"/>
+            <TextBox Name="txtDatetime" Text="{Binding datetimeVisit}"/>
+            <TextBlock Text="Стоимость:"/>
+            <TextBox Name="txtPrice" Text="{Binding priceVisit, StringFormat={}{0:N2} руб}"/>
+            <TextBlock Text="Комментарий:"/>
+            <TextBox Name="txtComment" Text="{Binding commentVisit}"/>
+            <TextBlock Text="Статус:"/>
+            <ComboBox Name="cmbStatus" SelectedValue="{Binding statusVisit}"/>
+            <StackPanel Orientation="Horizontal" Height="80" HorizontalAlignment="Center">
+                <Button x:Name="btnDelete" Margin="5,15,5,5" Content="Удалить" Visibility="Collapsed" Click="btnDelete_Click"/>
+                <Button x:Name="btnSave" Margin="5,15,5,5" Content="Сохранить" Click="btnSave_Click"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+            <TextBlock Text="Услуги:"/>
+            <ListView Name="ServicesListView" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0, 5, 0" d:ItemsSource="{d:SampleData ItemCount=1}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                            <StackPanel Width="250" Height="60">
+                                <TextBlock Text="{Binding titleService}" Margin="5"/>
+                                <TextBlock Text="{Binding priceService, StringFormat={}{0:N2} руб}" Margin="5"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ContextMenu>
+                    <ContextMenu Name="contextMenu">
+                        <MenuItem Name="btnDeleteService" Header="Удалить услугу" Click="btnDeleteService_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
+            <ComboBox Name="cmbService" Margin="10"/>
+            <Button x:Name="btnAddService" Margin="5,15,5,5" Content="Добавить услугу" Click="btnAddService_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

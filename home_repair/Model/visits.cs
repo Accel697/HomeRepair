@@ -28,11 +28,42 @@ namespace home_repair.Model
         public decimal priceVisit { get; set; }
         public string commentVisit { get; set; }
         public long statusVisit { get; set; }
+        public string adressVisit { get; set; }
     
         public virtual clients clients { get; set; }
         public virtual employees employees { get; set; }
         public virtual visit_statuses visit_statuses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<visits_services> visits_services { get; set; }
+
+        public string GetClient
+        {
+            get
+            {
+                if (this.clientVisit != null)
+                {
+                    return $"Клиент: \n{this.clients.lastNameClient} \n{this.clients.firstNameClient} \n {this.clients.middleNameClient}";
+                }
+                else
+                {
+                    return "Клиент: \nНе зарегистрирован";
+                }
+            }
+        }
+
+        public string GetMaster
+        {
+            get
+            {
+                if (this.masterVisit != null)
+                {
+                    return $"Мастер: \n{this.employees.lastNameEmployee} \n{this.employees.firstNameEmployee} \n {this.employees.middleNameEmployee}";
+                }
+                else
+                {
+                    return "Мастер: \nНе назначен";
+                }
+            }
+        }
     }
 }
