@@ -52,7 +52,7 @@ namespace home_repair.Pages
             string selectedJobTitle = cbJobTitle.SelectedItem as string;
 
             _filteredEmployees = _employees.Where(emp =>
-                (emp.lastNameEmployee + " " + emp.firstNameEmployee + " " + emp.middleNameEmployee).ToLower().Contains(searchText) &&
+                (emp.lastNameEmployee + " " + emp.firstNameEmployee + " " + (emp.middleNameEmployee ?? string.Empty)).ToLower().Contains(searchText) &&
                 (selectedJobTitle == "Все должности" || emp.job_titles.titleJob == selectedJobTitle)).ToList();
 
             EmployeesListView.ItemsSource = null;

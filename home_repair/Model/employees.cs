@@ -50,5 +50,30 @@ namespace home_repair.Model
                 return path;
             }
         }
+
+        public decimal GetRate
+        {
+            get
+            {
+                if (reviews.Count == 0)
+                    return 0;
+
+                decimal totalRating = 0;
+                foreach (var review in reviews)
+                {
+                    totalRating += review.gradeReview;
+                }
+
+                return totalRating / reviews.Count;
+            }
+        }
+
+        public int GetQuantityReviews
+        {
+            get
+            {
+                return reviews.Count;
+            }
+        }
     }
 }

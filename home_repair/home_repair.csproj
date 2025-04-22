@@ -127,12 +127,19 @@
     <Compile Include="Pages\EmployeeAccount.xaml.cs">
       <DependentUpon>EmployeeAccount.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\MakeVisit.xaml.cs">
+      <DependentUpon>MakeVisit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MasterReviews.xaml.cs">
+      <DependentUpon>MasterReviews.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\Validation.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -169,7 +176,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\MakeVisit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Manager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MasterReviews.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

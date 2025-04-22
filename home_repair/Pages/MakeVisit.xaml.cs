@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,58 +19,35 @@ using static home_repair.Services.Validation;
 namespace home_repair.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для AddEditVisit.xaml
+    /// Логика взаимодействия для MakeVisit.xaml
     /// </summary>
-    public partial class AddEditVisit : Page
+    public partial class MakeVisit : Page
     {
         visits _visit = new visits();
         List<services> _selectedServices = new List<services>();
 
-        public AddEditVisit(visits visit)
+        public MakeVisit(clients client)
         {
             InitializeComponent();
 
-            if (visit != null)
+            if (client != null)
             {
-                _visit = visit;
-                btnDelete.Visibility = Visibility.Visible;
+                _visit.clientVisit = client.idClient;
+                _visit.clients = client;
+                if (client.phoneNumberClient != null) 
+                    _visit.phoneNumberVisit = client.phoneNumberClient;
             }
+            _visit.statusVisit = 1;
 
-            LoadData();
-            DataContext = _visit;
-        }
-
-        private void LoadData()
-        {
             using (var context = new home_repairEntities1())
             {
-                var statuses = context.visit_statuses.ToList();
-                cmbStatus.ItemsSource = statuses;
-                cmbStatus.DisplayMemberPath = "titleStatus";
-                cmbStatus.SelectedValuePath = "idStatus";
-
                 var allServices = context.services.ToList();
                 cmbService.ItemsSource = allServices;
                 cmbService.DisplayMemberPath = "titleService";
                 cmbService.SelectedValuePath = "idService";
-
-                if (_visit.idVisit != 0)
-                {
-                    var services = context.visits_services
-                        .Where(vs => vs.visit == _visit.idVisit)
-                        .Select(vs => vs.service)
-                        .ToList();
-
-                    foreach (var service in services)
-                    {
-                        var serviceInDb = context.services.FirstOrDefault(s => s.idService == service);
-                        _selectedServices.Add(serviceInDb);
-                    }
-
-                    UpdateServicesList();
-                    CalculateTotalPrice();
-                }
             }
+
+            DataContext = _visit;
         }
 
         private void UpdateServicesList()
@@ -126,38 +102,7 @@ namespace home_repair.Pages
             }
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show($"Удалить вызов №{_visit.idVisit}?", "Подтверждение",
-            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    using (var context = new home_repairEntities1())
-                    {
-                        var visitToDelete = context.visits
-                            .Include(v => v.visits_services)
-                            .FirstOrDefault(v => v.idVisit == _visit.idVisit);
-
-                        if (visitToDelete != null)
-                        {
-                            context.visits_services.RemoveRange(visitToDelete.visits_services);
-                            context.visits.Remove(visitToDelete);
-                            context.SaveChanges();
-
-                            MessageBox.Show("Вызов удален");
-                            NavigationService.GoBack();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении: {ex.Message}");
-                }
-            }
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void btnAddVisit_Click(object sender, RoutedEventArgs e)
         {
             using (var context = new home_repairEntities1())
             {
@@ -170,32 +115,7 @@ namespace home_repair.Pages
                     return;
                 }
 
-                if (_visit.idVisit == 0)
-                {
-                    context.visits.Add(_visit);
-                    NavigationService.GoBack();
-                }
-                else
-                {
-                    var existingVisit = context.visits
-                        .Include(v => v.visits_services)
-                        .FirstOrDefault(v => v.idVisit == _visit.idVisit);
-
-                    if (existingVisit != null)
-                    {
-                        existingVisit.masterVisit = _visit.masterVisit;
-                        existingVisit.clientVisit = _visit.clientVisit;
-                        existingVisit.phoneNumberVisit = _visit.phoneNumberVisit;
-                        existingVisit.adressVisit = _visit.adressVisit;
-                        existingVisit.datetimeVisit = _visit.datetimeVisit;
-                        existingVisit.priceVisit = _visit.priceVisit;
-                        existingVisit.commentVisit = _visit.commentVisit;
-                        existingVisit.statusVisit = _visit.statusVisit;
-
-                        context.visits_services.RemoveRange(existingVisit.visits_services);
-                    }
-                }
-
+                context.visits.Add(_visit);
                 foreach (var service in _selectedServices)
                 {
                     context.visits_services.Add(new visits_services
@@ -204,10 +124,10 @@ namespace home_repair.Pages
                         service = service.idService
                     });
                 }
-
                 try
                 {
                     context.SaveChanges();
+                    NavigationService.GoBack();
                     MessageBox.Show("Данные сохранены успешно!");
                 }
                 catch (Exception ex)

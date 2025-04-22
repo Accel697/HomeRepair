@@ -1,0 +1,50 @@
+﻿<Page x:Class="home_repair.Pages.MasterReviews"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:home_repair.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MasterReviews">
+
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Фильтр по оценке" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ComboBox Name="cbGrade" Text="Все отзывы" Width="200" Margin="10" SelectionChanged="cbGrade_SelectionChanged"  Height="35"/>
+            </StackPanel>
+            <ListView Name="ReviewsListView" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0, 5, 0" d:ItemsSource="{d:SampleData ItemCount=1}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                            <StackPanel Width="200" Height="220">
+                                <TextBlock Text="{Binding clients.lastNameClient}" Margin="5"/>
+                                <TextBlock Text="{Binding clients.firstNameClient}" Margin="5"/>
+                                <TextBlock Text="{Binding clients.middleNameClient}" Margin="5"/>
+                                <TextBlock Text="{Binding gradeReview, StringFormat='Оценка: {0}/5'}" Margin="5"/>
+                                <TextBlock Text="{Binding commentReview}" Margin="5" TextWrapping="Wrap" MaxWidth="190"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <TextBlock Name="tbNoCLient" Text="Зарегистрируйтесь чтобы оставить отзыв!" Visibility="Collapsed"/>
+            <TextBlock Name="tbGrade" Text="Введите оценку от 1 до 5" Visibility="Collapsed"/>
+            <TextBox Name="txtGrade" Visibility="Collapsed"/>
+            <TextBlock Name="tbText" Text="Введите текст отзыва" Visibility="Collapsed"/>
+            <TextBox Name="txtText" Visibility="Collapsed"/>
+            <Button x:Name="btnAddReview" Margin="5,15,5,15" Content="Оставить отзыв" Click="btnAddReview_Click"  Width="180" Visibility="Collapsed"/>
+        </StackPanel>
+    </Grid>
+</Page>

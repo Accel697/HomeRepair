@@ -50,8 +50,8 @@ namespace home_repair.Pages
             string selectedVisitStatus = cbStatusVisit.SelectedItem as string;
 
             _filteredVisits = _visits.Where(vis =>
-                ((vis.employees.lastNameEmployee + " " + vis.employees.firstNameEmployee + " " + vis.employees.middleNameEmployee).ToLower().Contains(searchText) ||
-                (vis.clients.lastNameClient + " " + vis.clients.firstNameClient + " " + vis.clients.middleNameClient).ToLower().Contains(searchText)) &&
+                ((vis.employees != null && (vis.employees.lastNameEmployee + " " + vis.employees.firstNameEmployee + " " + vis.employees.middleNameEmployee).ToLower().Contains(searchText)) ||
+                (vis.clients != null &&(vis.clients.lastNameClient + " " + vis.clients.firstNameClient + " " + vis.clients.middleNameClient).ToLower().Contains(searchText))) &&
                 (selectedVisitStatus == "Все вызовы" || vis.visit_statuses.titleStatus == selectedVisitStatus)).ToList();
 
             VisitsListView.ItemsSource = null;

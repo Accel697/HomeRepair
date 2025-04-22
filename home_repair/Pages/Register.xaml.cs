@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using home_repair.Model;
+using static home_repair.Services.Validation;
 
 namespace home_repair.Pages
 {
@@ -38,6 +39,15 @@ namespace home_repair.Pages
                 emailClient = txtbEmail.Text,
                 phoneNumberClient = txtbPhoneNumber.Text
             };
+
+            var clientValidator = new ClientValidator();
+            var (isCLientValid, clientErrors) = clientValidator.Validate(newCLient);
+
+            if (!isCLientValid)
+            {
+                MessageBox.Show(string.Join("\n", clientErrors), "Ошибки валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             try
             {

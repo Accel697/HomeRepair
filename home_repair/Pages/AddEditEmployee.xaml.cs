@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using home_repair.Model;
+using static home_repair.Services.Validation;
 
 namespace home_repair.Pages
 {
@@ -124,43 +125,51 @@ namespace home_repair.Pages
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            try
+            using (var context = new home_repairEntities1())
             {
-                using (var context = new home_repairEntities1())
+                var employeeValidator = new EmployeeValidator();
+                var (isEmployeeValid, employeeErrors) = employeeValidator.Validate(_employee);
+
+                if (!isEmployeeValid)
                 {
-                    if (_employee.idEmployee == 0)
+                    MessageBox.Show(string.Join("\n", employeeErrors), "Ошибки валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (_employee.idEmployee == 0)
+                {
+                    context.employees.Add(_employee);
+                    NavigationService.GoBack();
+                }
+                else
+                {
+                    var employeeInDb = context.employees.FirstOrDefault(em => em.idEmployee == _employee.idEmployee);
+                    if (employeeInDb != null)
                     {
-                        context.employees.Add(_employee);
-                        NavigationService.GoBack();
+                        employeeInDb.firstNameEmployee = _employee.firstNameEmployee;
+                        employeeInDb.lastNameEmployee = _employee.lastNameEmployee;
+                        employeeInDb.middleNameEmployee = _employee.middleNameEmployee;
+                        employeeInDb.birthDateEmployee = _employee.birthDateEmployee;
+                        employeeInDb.genderEmployee = _employee.genderEmployee;
+                        employeeInDb.positionAtWork = _employee.positionAtWork;
+                        employeeInDb.wages = _employee.wages;
+                        employeeInDb.phoneNumberEmployee = _employee.phoneNumberEmployee;
                     }
                     else
                     {
-                        var employeeInDb = context.employees.FirstOrDefault(em => em.idEmployee == _employee.idEmployee);
-                        if (employeeInDb != null)
-                        {
-                            employeeInDb.firstNameEmployee = _employee.firstNameEmployee;
-                            employeeInDb.lastNameEmployee = _employee.lastNameEmployee;
-                            employeeInDb.middleNameEmployee = _employee.middleNameEmployee;
-                            employeeInDb.birthDateEmployee = _employee.birthDateEmployee;
-                            employeeInDb.genderEmployee = _employee.genderEmployee;
-                            employeeInDb.positionAtWork = _employee.positionAtWork;
-                            employeeInDb.wages = _employee.wages;
-                            employeeInDb.phoneNumberEmployee = _employee.phoneNumberEmployee;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Сотрудник не найден для обновления", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
+                        MessageBox.Show("Сотрудник не найден для обновления", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
-
+                }
+                try
+                {
                     context.SaveChanges();
                     MessageBox.Show("Данные сохранены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
