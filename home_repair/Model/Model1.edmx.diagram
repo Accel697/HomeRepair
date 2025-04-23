@@ -4,27 +4,29 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d4ba50b47b8a4d6ea88fd00a697f4a44" Name="Diagram1">
-        <EntityTypeShape EntityType="home_repairModel.clients" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.employees" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.genders" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.job_titles" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.reviews" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.services" Width="1.5" PointX="8.25" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.users" Width="1.5" PointX="5.25" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.visit_statuses" Width="1.5" PointX="6" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.visits" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="home_repairModel.visits_services" Width="1.5" PointX="10.5" PointY="6.375" IsExpanded="true" />
+      <Diagram DiagramId="488ea326fae24cb3828bc35076e516d9" Name="Diagram1">
+        <EntityTypeShape EntityType="home_repairModel.clients" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.employees" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.genders" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.job_titles" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.reviews" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.services" Width="1.5" PointX="3" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.users" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.visit_statuses" Width="1.5" PointX="0.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.visits" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.visits_masters" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="home_repairModel.visits_services" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
         <AssociationConnector Association="home_repairModel.FK_reviews_clients" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_visits_clients" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_employees_genders" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_employees_job_titles" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_reviews_employees" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_users_employees" ManuallyRouted="false" />
-        <AssociationConnector Association="home_repairModel.FK_visits_employees" ManuallyRouted="false" />
+        <AssociationConnector Association="home_repairModel.FK_visits_masters_employees" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_visits_services_services1" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_visits_visit_statuses" ManuallyRouted="false" />
+        <AssociationConnector Association="home_repairModel.FK_visits_masters_visits" ManuallyRouted="false" />
         <AssociationConnector Association="home_repairModel.FK_visits_services_visits1" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

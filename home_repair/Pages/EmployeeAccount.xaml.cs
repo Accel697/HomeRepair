@@ -28,7 +28,7 @@ namespace home_repair.Pages
         {
             InitializeComponent();
 
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 _user = context.users.FirstOrDefault(u => u.employeeData == employee.idEmployee);
             }
@@ -44,7 +44,7 @@ namespace home_repair.Pages
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 var userValidator = new UserValidator();
                 var (isUserValid, userErrors) = userValidator.Validate(_user);

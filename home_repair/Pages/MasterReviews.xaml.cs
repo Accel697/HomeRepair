@@ -53,7 +53,7 @@ namespace home_repair.Pages
 
         private void LoadData()
         {
-            var context = new home_repairEntities1();
+            var context = new home_repairEntities6();
             _reviews = context.reviews.Where(r => r.masterReview == _review.masterReview).ToList();
             ReviewsListView.ItemsSource = _reviews;
         }
@@ -95,7 +95,7 @@ namespace home_repair.Pages
 
             try
             {
-                using (var context = new home_repairEntities1())
+                using (var context = new home_repairEntities6())
                 {
                     context.reviews.Add(_review);
                     context.SaveChanges();

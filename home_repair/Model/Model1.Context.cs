@@ -13,10 +13,10 @@ namespace home_repair.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class home_repairEntities1 : DbContext
+    public partial class home_repairEntities6 : DbContext
     {
-        public home_repairEntities1()
-            : base("name=home_repairEntities1")
+        public home_repairEntities6()
+            : base("name=home_repairEntities6")
         {
         }
     
@@ -35,6 +35,7 @@ namespace home_repair.Model
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<visit_statuses> visit_statuses { get; set; }
         public virtual DbSet<visits> visits { get; set; }
+        public virtual DbSet<visits_masters> visits_masters { get; set; }
         public virtual DbSet<visits_services> visits_services { get; set; }
     }
 }

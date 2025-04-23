@@ -19,7 +19,7 @@ namespace home_repair.Model
         {
             this.reviews = new HashSet<reviews>();
             this.users = new HashSet<users>();
-            this.visits = new HashSet<visits>();
+            this.visits_masters = new HashSet<visits_masters>();
         }
     
         public long idEmployee { get; set; }
@@ -40,7 +40,7 @@ namespace home_repair.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<users> users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<visits> visits { get; set; }
+        public virtual ICollection<visits_masters> visits_masters { get; set; }
 
         public string photoUrl
         {

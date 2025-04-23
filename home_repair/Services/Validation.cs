@@ -99,9 +99,6 @@ namespace home_repair.Services
             {
                 var errors = new List<string>();
 
-                if (visit.masterVisit < 0)
-                    errors.Add("Неверный id мастера.");
-
                 if (visit.clientVisit < 0)
                     errors.Add("Неверный id клмента.");
 

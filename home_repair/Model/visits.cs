@@ -17,22 +17,23 @@ namespace home_repair.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public visits()
         {
+            this.visits_masters = new HashSet<visits_masters>();
             this.visits_services = new HashSet<visits_services>();
         }
     
         public long idVisit { get; set; }
-        public Nullable<long> masterVisit { get; set; }
         public Nullable<long> clientVisit { get; set; }
         public string phoneNumberVisit { get; set; }
-        public Nullable<System.DateTime> datetimeVisit { get; set; }
+        public string adressVisit { get; set; }
+        public System.DateTime datetimeVisit { get; set; }
         public decimal priceVisit { get; set; }
         public string commentVisit { get; set; }
         public long statusVisit { get; set; }
-        public string adressVisit { get; set; }
     
         public virtual clients clients { get; set; }
-        public virtual employees employees { get; set; }
         public virtual visit_statuses visit_statuses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<visits_masters> visits_masters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<visits_services> visits_services { get; set; }
 
@@ -47,21 +48,6 @@ namespace home_repair.Model
                 else
                 {
                     return "Клиент: \nНе зарегистрирован";
-                }
-            }
-        }
-
-        public string GetMaster
-        {
-            get
-            {
-                if (this.masterVisit != null)
-                {
-                    return $"Мастер: \n{this.employees.lastNameEmployee} \n{this.employees.firstNameEmployee} \n {this.employees.middleNameEmployee}";
-                }
-                else
-                {
-                    return "Мастер: \nНе назначен";
                 }
             }
         }

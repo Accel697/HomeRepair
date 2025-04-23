@@ -38,7 +38,7 @@ namespace home_repair.Pages
             string login = txtbLogin.Text.Trim();
             string password = pswbPassword.Password.Trim();
 
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 var user = context.users.Where(x => x.loginUser == login && x.passwordUser == password).FirstOrDefault();
                 var client = context.clients.Where(x => x.loginClient == login && x.passwordClient == password).FirstOrDefault();

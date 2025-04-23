@@ -32,9 +32,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                            <StackPanel Width="200" Height="320">
+                            <StackPanel Width="200" Height="280">
                                 <TextBlock Text="{Binding visit_statuses.titleStatus}" FontWeight="Bold" Margin="5"/>
-                                <TextBlock Text="{Binding GetMaster}" Margin="5"/>
                                 <TextBlock Text="{Binding GetClient}" Margin="5"/>
                                 <TextBlock Text="{Binding phoneNumberVisit}" Margin="5"/>
                                 <TextBlock Text="{Binding adressVisit}" Margin="5" TextWrapping="Wrap" MaxWidth="190"/>

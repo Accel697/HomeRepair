@@ -39,14 +39,14 @@ namespace home_repair.Pages
 
         private void LoadData()
         {
-            var context = new home_repairEntities1();
-            _employees = context.employees.Where(emp => emp.positionAtWork == 3).ToList();
+            var context = new home_repairEntities6();
+            _employees = context.employees.Where(emp => emp.positionAtWork != 1 && emp.positionAtWork != 2).ToList();
             EmployeesListView.ItemsSource = _employees;
 
             _services = context.services.ToList();
             ServicesListView.ItemsSource = _services;
 
-            _jobTitles = context.job_titles.Select(j => j.titleJob).Distinct().ToList();
+            _jobTitles = context.job_titles.Where(j => j.idJob != 1 && j.idJob != 2).Select(j => j.titleJob).Distinct().ToList();
             _jobTitles.Insert(0, "Все должности");
             cbJobTitle.ItemsSource = _jobTitles;
             cbJobTitle.SelectedIndex = 0;

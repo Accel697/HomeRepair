@@ -43,7 +43,7 @@ namespace home_repair.Pages
 
         private void LoadComboBoxes()
         {
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 var genders = context.genders.ToList();
                 if (genders.Any())
@@ -78,7 +78,7 @@ namespace home_repair.Pages
             {
                 try
                 {
-                    using (var context = new home_repairEntities1())
+                    using (var context = new home_repairEntities6())
                     {
                         var employeeToDelete = context.employees
                             .Include("users") 
@@ -125,7 +125,7 @@ namespace home_repair.Pages
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 var employeeValidator = new EmployeeValidator();
                 var (isEmployeeValid, employeeErrors) = employeeValidator.Validate(_employee);

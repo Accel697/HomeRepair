@@ -45,7 +45,7 @@
             <PropertyRef Name="idJob" />
           </Key>
           <Property Name="idJob" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="titleJob" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="titleJob" Type="varchar" MaxLength="40" Nullable="false" />
         </EntityType>
         <EntityType Name="reviews">
           <Key>
@@ -97,14 +97,21 @@
             <PropertyRef Name="idVisit" />
           </Key>
           <Property Name="idVisit" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="masterVisit" Type="bigint" />
           <Property Name="clientVisit" Type="bigint" />
           <Property Name="phoneNumberVisit" Type="varchar" MaxLength="12" Nullable="false" />
-          <Property Name="adressVisit" Type="varchar" MaxLength="100" />
-          <Property Name="datetimeVisit" Type="datetime" />
+          <Property Name="adressVisit" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="datetimeVisit" Type="datetime" Nullable="false" />
           <Property Name="priceVisit" Type="numeric" Precision="8" Scale="2" Nullable="false" />
           <Property Name="commentVisit" Type="varchar" MaxLength="500" />
           <Property Name="statusVisit" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="visits_masters">
+          <Key>
+            <PropertyRef Name="visit" />
+            <PropertyRef Name="master" />
+          </Key>
+          <Property Name="visit" Type="bigint" Nullable="false" />
+          <Property Name="master" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="visits_services">
           <Key>
@@ -186,15 +193,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_visits_employees">
-          <End Role="employees" Type="Self.employees" Multiplicity="0..1" />
-          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+        <Association Name="FK_visits_masters_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="1" />
+          <End Role="visits_masters" Type="Self.visits_masters" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="employees">
               <PropertyRef Name="idEmployee" />
             </Principal>
-            <Dependent Role="visits">
-              <PropertyRef Name="masterVisit" />
+            <Dependent Role="visits_masters">
+              <PropertyRef Name="master" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_masters_visits">
+          <End Role="visits" Type="Self.visits" Multiplicity="1" />
+          <End Role="visits_masters" Type="Self.visits_masters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="visits">
+              <PropertyRef Name="idVisit" />
+            </Principal>
+            <Dependent Role="visits_masters">
+              <PropertyRef Name="visit" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -245,6 +264,7 @@
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="visit_statuses" EntityType="Self.visit_statuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="visits" EntityType="Self.visits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="visits_masters" EntityType="Self.visits_masters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="visits_services" EntityType="Self.visits_services" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_employees_genders" Association="Self.FK_employees_genders">
             <End Role="genders" EntitySet="genders" />
@@ -270,9 +290,13 @@
             <End Role="clients" EntitySet="clients" />
             <End Role="visits" EntitySet="visits" />
           </AssociationSet>
-          <AssociationSet Name="FK_visits_employees" Association="Self.FK_visits_employees">
+          <AssociationSet Name="FK_visits_masters_employees" Association="Self.FK_visits_masters_employees">
             <End Role="employees" EntitySet="employees" />
+            <End Role="visits_masters" EntitySet="visits_masters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_masters_visits" Association="Self.FK_visits_masters_visits">
             <End Role="visits" EntitySet="visits" />
+            <End Role="visits_masters" EntitySet="visits_masters" />
           </AssociationSet>
           <AssociationSet Name="FK_visits_services_services1" Association="Self.FK_visits_services_services1">
             <End Role="services" EntitySet="services" />
@@ -324,7 +348,7 @@
           <NavigationProperty Name="job_titles" Relationship="Self.FK_employees_job_titles" FromRole="employees" ToRole="job_titles" />
           <NavigationProperty Name="reviews" Relationship="Self.FK_reviews_employees" FromRole="employees" ToRole="reviews" />
           <NavigationProperty Name="users" Relationship="Self.FK_users_employees" FromRole="employees" ToRole="users" />
-          <NavigationProperty Name="visits" Relationship="Self.FK_visits_employees" FromRole="employees" ToRole="visits" />
+          <NavigationProperty Name="visits_masters" Relationship="Self.FK_visits_masters_employees" FromRole="employees" ToRole="visits_masters" />
         </EntityType>
         <EntityType Name="genders">
           <Key>
@@ -339,7 +363,7 @@
             <PropertyRef Name="idJob" />
           </Key>
           <Property Name="idJob" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="titleJob" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="titleJob" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="employees" Relationship="Self.FK_employees_job_titles" FromRole="job_titles" ToRole="employees" />
         </EntityType>
         <EntityType Name="reviews">
@@ -397,18 +421,27 @@
             <PropertyRef Name="idVisit" />
           </Key>
           <Property Name="idVisit" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="masterVisit" Type="Int64" />
           <Property Name="clientVisit" Type="Int64" />
           <Property Name="phoneNumberVisit" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="datetimeVisit" Type="DateTime" Precision="3" />
+          <Property Name="adressVisit" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="datetimeVisit" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="priceVisit" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
           <Property Name="commentVisit" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="statusVisit" Type="Int64" Nullable="false" />
           <NavigationProperty Name="clients" Relationship="Self.FK_visits_clients" FromRole="visits" ToRole="clients" />
-          <NavigationProperty Name="employees" Relationship="Self.FK_visits_employees" FromRole="visits" ToRole="employees" />
           <NavigationProperty Name="visit_statuses" Relationship="Self.FK_visits_visit_statuses" FromRole="visits" ToRole="visit_statuses" />
+          <NavigationProperty Name="visits_masters" Relationship="Self.FK_visits_masters_visits" FromRole="visits" ToRole="visits_masters" />
           <NavigationProperty Name="visits_services" Relationship="Self.FK_visits_services_visits1" FromRole="visits" ToRole="visits_services" />
-          <Property Name="adressVisit" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="visits_masters">
+          <Key>
+            <PropertyRef Name="visit" />
+            <PropertyRef Name="master" />
+          </Key>
+          <Property Name="visit" Type="Int64" Nullable="false" />
+          <Property Name="master" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_visits_masters_employees" FromRole="visits_masters" ToRole="employees" />
+          <NavigationProperty Name="visits" Relationship="Self.FK_visits_masters_visits" FromRole="visits_masters" ToRole="visits" />
         </EntityType>
         <EntityType Name="visits_services">
           <Key>
@@ -492,15 +525,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_visits_employees">
-          <End Role="employees" Type="Self.employees" Multiplicity="0..1" />
-          <End Role="visits" Type="Self.visits" Multiplicity="*" />
+        <Association Name="FK_visits_masters_employees">
+          <End Role="employees" Type="Self.employees" Multiplicity="1" />
+          <End Role="visits_masters" Type="Self.visits_masters" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="employees">
               <PropertyRef Name="idEmployee" />
             </Principal>
-            <Dependent Role="visits">
-              <PropertyRef Name="masterVisit" />
+            <Dependent Role="visits_masters">
+              <PropertyRef Name="master" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -528,6 +561,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_visits_masters_visits">
+          <End Role="visits" Type="Self.visits" Multiplicity="1" />
+          <End Role="visits_masters" Type="Self.visits_masters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="visits">
+              <PropertyRef Name="idVisit" />
+            </Principal>
+            <Dependent Role="visits_masters">
+              <PropertyRef Name="visit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_visits_services_visits1">
           <End Role="visits" Type="Self.visits" Multiplicity="1" />
           <End Role="visits_services" Type="Self.visits_services" Multiplicity="*" />
@@ -540,7 +585,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="home_repairEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="home_repairEntities6" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="clients" EntityType="Self.clients" />
           <EntitySet Name="employees" EntityType="Self.employees" />
           <EntitySet Name="genders" EntityType="Self.genders" />
@@ -551,6 +596,7 @@
           <EntitySet Name="users" EntityType="Self.users" />
           <EntitySet Name="visit_statuses" EntityType="Self.visit_statuses" />
           <EntitySet Name="visits" EntityType="Self.visits" />
+          <EntitySet Name="visits_masters" EntityType="Self.visits_masters" />
           <EntitySet Name="visits_services" EntityType="Self.visits_services" />
           <AssociationSet Name="FK_reviews_clients" Association="Self.FK_reviews_clients">
             <End Role="clients" EntitySet="clients" />
@@ -576,9 +622,9 @@
             <End Role="employees" EntitySet="employees" />
             <End Role="users" EntitySet="users" />
           </AssociationSet>
-          <AssociationSet Name="FK_visits_employees" Association="Self.FK_visits_employees">
+          <AssociationSet Name="FK_visits_masters_employees" Association="Self.FK_visits_masters_employees">
             <End Role="employees" EntitySet="employees" />
-            <End Role="visits" EntitySet="visits" />
+            <End Role="visits_masters" EntitySet="visits_masters" />
           </AssociationSet>
           <AssociationSet Name="FK_visits_services_services1" Association="Self.FK_visits_services_services1">
             <End Role="services" EntitySet="services" />
@@ -587,6 +633,10 @@
           <AssociationSet Name="FK_visits_visit_statuses" Association="Self.FK_visits_visit_statuses">
             <End Role="visit_statuses" EntitySet="visit_statuses" />
             <End Role="visits" EntitySet="visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_masters_visits" Association="Self.FK_visits_masters_visits">
+            <End Role="visits" EntitySet="visits" />
+            <End Role="visits_masters" EntitySet="visits_masters" />
           </AssociationSet>
           <AssociationSet Name="FK_visits_services_visits1" Association="Self.FK_visits_services_visits1">
             <End Role="visits" EntitySet="visits" />
@@ -598,7 +648,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище home_repairModelContainer" CdmEntityContainer="home_repairEntities1">
+        <EntityContainerMapping StorageEntityContainer="Хранилище home_repairModelContainer" CdmEntityContainer="home_repairEntities6">
           <EntitySetMapping Name="clients">
             <EntityTypeMapping TypeName="home_repairModel.clients">
               <MappingFragment StoreEntitySet="clients">
@@ -698,15 +748,22 @@
           <EntitySetMapping Name="visits">
             <EntityTypeMapping TypeName="home_repairModel.visits">
               <MappingFragment StoreEntitySet="visits">
-                <ScalarProperty Name="adressVisit" ColumnName="adressVisit" />
                 <ScalarProperty Name="idVisit" ColumnName="idVisit" />
-                <ScalarProperty Name="masterVisit" ColumnName="masterVisit" />
                 <ScalarProperty Name="clientVisit" ColumnName="clientVisit" />
                 <ScalarProperty Name="phoneNumberVisit" ColumnName="phoneNumberVisit" />
+                <ScalarProperty Name="adressVisit" ColumnName="adressVisit" />
                 <ScalarProperty Name="datetimeVisit" ColumnName="datetimeVisit" />
                 <ScalarProperty Name="priceVisit" ColumnName="priceVisit" />
                 <ScalarProperty Name="commentVisit" ColumnName="commentVisit" />
                 <ScalarProperty Name="statusVisit" ColumnName="statusVisit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="visits_masters">
+            <EntityTypeMapping TypeName="home_repairModel.visits_masters">
+              <MappingFragment StoreEntitySet="visits_masters">
+                <ScalarProperty Name="visit" ColumnName="visit" />
+                <ScalarProperty Name="master" ColumnName="master" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

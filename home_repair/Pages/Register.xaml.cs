@@ -51,7 +51,7 @@ namespace home_repair.Pages
 
             try
             {
-                using (var context = new home_repairEntities1())
+                using (var context = new home_repairEntities6())
                 {
                     bool isLoginExists = context.clients.Any(c => c.loginClient == newCLient.loginClient);
                     if (isLoginExists)

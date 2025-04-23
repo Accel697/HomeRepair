@@ -10,11 +10,42 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260"/>
+            <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
+            <TextBlock Text="Мастера:"/>
+            <ListView Name="MastersListView" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0, 5, 0" d:ItemsSource="{d:SampleData ItemCount=1}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                            <StackPanel Width="200" Height="180">
+                                <TextBlock Text="{Binding job_titles.titleJob}" FontWeight="Bold" TextWrapping="Wrap" MaxWidth="190" Margin="5"/>
+                                <TextBlock Text="{Binding lastNameEmployee}" Margin="5"/>
+                                <TextBlock Text="{Binding firstNameEmployee}" Margin="5"/>
+                                <TextBlock Text="{Binding middleNameEmployee}" Margin="5"/>
+                                <TextBlock Text="{Binding phoneNumberEmployee}" Margin="5"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ContextMenu>
+                    <ContextMenu Name="contextMasterMenu">
+                        <MenuItem Name="btnDeleteMaster" Header="Удалить услугу" Click="btnDeleteMaster_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
             <TextBlock Text="Поиск по ФИО"/>
             <TextBox Name="tbSearch" Margin="10"/>
             <Button x:Name="btnSearchMaster" Margin="5,15,5,5" Content="Найти мастера" Click="btnSearchMaster_Click"/>

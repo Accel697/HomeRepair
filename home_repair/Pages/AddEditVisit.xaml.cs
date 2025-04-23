@@ -26,6 +26,7 @@ namespace home_repair.Pages
     {
         visits _visit = new visits();
         List<services> _selectedServices = new List<services>();
+        List<employees> _selectedMasters = new List<employees>();
 
         public AddEditVisit(visits visit)
         {
@@ -43,7 +44,7 @@ namespace home_repair.Pages
 
         private void LoadData()
         {
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 var statuses = context.visit_statuses.ToList();
                 cmbStatus.ItemsSource = statuses;
@@ -70,6 +71,19 @@ namespace home_repair.Pages
 
                     UpdateServicesList();
                     CalculateTotalPrice();
+
+                    var masters = context.visits_masters
+                        .Where(vm => vm.visit == _visit.idVisit)
+                        .Select(vm => vm.master)
+                        .ToList();
+
+                    foreach(var master in masters)
+                    {
+                        var masterInDb = context.employees.Include(emp => emp.job_titles).FirstOrDefault(emp => emp.idEmployee == master);
+                        _selectedMasters.Add(masterInDb);
+                    }
+
+                    UpdateMastersList();
                 }
             }
         }
@@ -78,6 +92,12 @@ namespace home_repair.Pages
         {
             ServicesListView.ItemsSource = null;
             ServicesListView.ItemsSource = _selectedServices;
+        }
+
+        private void UpdateMastersList()
+        {
+            MastersListView.ItemsSource = null;
+            MastersListView.ItemsSource= _selectedMasters;
         }
 
         private void CalculateTotalPrice()
@@ -96,10 +116,11 @@ namespace home_repair.Pages
                 return;
             }
 
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 var master = context.employees
-                    .FirstOrDefault(emp => emp.positionAtWork == 3 &&
+                    .Include(emp => emp.job_titles)
+                    .FirstOrDefault(emp => emp.positionAtWork != 1 && emp.positionAtWork != 2 &&
                         (emp.lastNameEmployee.Contains(searchText) ||
                         (emp.firstNameEmployee.Contains(searchText) ||
                         (emp.middleNameEmployee != null && emp.middleNameEmployee.Contains(searchText)))));
@@ -113,10 +134,14 @@ namespace home_repair.Pages
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        _visit.masterVisit = master.idEmployee;
-                        _visit.employees = master;
-                        DataContext = null;
-                        DataContext = _visit;
+                        if (_selectedMasters.Any(s => s.idEmployee == master.idEmployee))
+                        {
+                            MessageBox.Show("Этот мастер уже добавлен");
+                            return;
+                        }
+
+                        _selectedMasters.Add(master);
+                        UpdateMastersList();
                     }
                 }
                 else
@@ -133,15 +158,17 @@ namespace home_repair.Pages
             {
                 try
                 {
-                    using (var context = new home_repairEntities1())
+                    using (var context = new home_repairEntities6())
                     {
                         var visitToDelete = context.visits
                             .Include(v => v.visits_services)
+                            .Include(v => v.visits_masters)
                             .FirstOrDefault(v => v.idVisit == _visit.idVisit);
 
                         if (visitToDelete != null)
                         {
                             context.visits_services.RemoveRange(visitToDelete.visits_services);
+                            context.visits_masters.RemoveRange(visitToDelete.visits_masters);
                             context.visits.Remove(visitToDelete);
                             context.SaveChanges();
 
@@ -159,7 +186,7 @@ namespace home_repair.Pages
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var context = new home_repairEntities1())
+            using (var context = new home_repairEntities6())
             {
                 var visitValidator = new VisitValidator();
                 var (isVisitValid, visitErrors) = visitValidator.Visit(_visit);
@@ -179,11 +206,11 @@ namespace home_repair.Pages
                 {
                     var existingVisit = context.visits
                         .Include(v => v.visits_services)
+                        .Include(v => v.visits_masters)
                         .FirstOrDefault(v => v.idVisit == _visit.idVisit);
 
                     if (existingVisit != null)
                     {
-                        existingVisit.masterVisit = _visit.masterVisit;
                         existingVisit.clientVisit = _visit.clientVisit;
                         existingVisit.phoneNumberVisit = _visit.phoneNumberVisit;
                         existingVisit.adressVisit = _visit.adressVisit;
@@ -193,6 +220,7 @@ namespace home_repair.Pages
                         existingVisit.statusVisit = _visit.statusVisit;
 
                         context.visits_services.RemoveRange(existingVisit.visits_services);
+                        context.visits_masters.RemoveRange(existingVisit.visits_masters);
                     }
                 }
 
@@ -202,6 +230,15 @@ namespace home_repair.Pages
                     {
                         visit = _visit.idVisit,
                         service = service.idService
+                    });
+                }
+
+                foreach (var master in _selectedMasters)
+                {
+                    context.visits_masters.Add(new visits_masters
+                    {
+                        visit = _visit.idVisit,
+                        master = master.idEmployee
                     });
                 }
 
@@ -248,6 +285,19 @@ namespace home_repair.Pages
             else
             {
                 MessageBox.Show("Выберите услугу из списка");
+            }
+        }
+
+        private void btnDeleteMaster_Click(object sender, RoutedEventArgs e)
+        {
+            if (MastersListView.SelectedItem is employees selectedMaster)
+            {
+                _selectedMasters.Remove(selectedMaster);
+                UpdateMastersList();
+            }
+            else
+            {
+                MessageBox.Show("Выберите мастера для удаления");
             }
         }
     }
